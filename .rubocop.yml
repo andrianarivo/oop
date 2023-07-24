@@ -1,4 +1,4 @@
-`AllCops:
+AllCops:
   NewCops: enable
   Exclude:
     - "Guardfile"
@@ -33,6 +33,8 @@ Style/DefWithParentheses:
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 
+Layout/EndOfLine:
+  EnforcedStyle: crlf
 Layout/HashAlignment:
   EnforcedColonStyle: key
 Layout/ExtraSpacing:

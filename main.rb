@@ -5,6 +5,7 @@ require_relative 'trimmer_decorator'
 require_relative 'classroom'
 require_relative 'book'
 require_relative 'rental'
+require_relative 'app'
 
 student = Student.new(15, 'Class C', 'Bob jr', parent_permission: false)
 puts student.play_hooky
@@ -30,3 +31,19 @@ rental = Rental.new('2023-07-26', book, student)
 puts rental.inspect
 puts book.inspect
 puts student.inspect
+
+puts "##########################################################################"
+puts "#                               FROM APP                                 #"
+puts "##########################################################################"
+
+$books.push(book)
+$people.push(student)
+$rentals.push(rental)
+
+list_books
+list_people
+list_rentals
+
+puts 'What is your name?'
+name = gets.chomp
+puts "Hello, #{name}"

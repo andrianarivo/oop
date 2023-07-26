@@ -1,38 +1,40 @@
 require_relative 'rental'
 require_relative 'book'
+require 'date'
 
 $books = []
 $people = []
 $rentals = []
 
 def list_books
-  $books.each do |book|
-    puts book
+  $books.each_with_index do |book, idx|
+    puts "#{idx+1} - #{book}"
   end
+  puts "\n"
 end
 
 def list_people
-  $people.each do |person|
-    puts person
+  $people.each_with_index do |person, idx|
+    puts "#{idx+1} - #{person}"
   end
+  puts "\n"
 end
-
 def create_person(person)
   $people.push(person)
 end
 
-def create_book(title, author)
-  book = Book.new(title, author)
+def create_book(book)
   $books.push(book)
 end
 
-def create_rental(book, person)
-  rental = Rental.new(Time.now.utc, book, person)
+def create_rental(rental)
   $rentals.push(rental)
 end
 
-def list_rentals
-  $rentals.each do |rental|
-    puts rental
+def list_rentals(person_id)
+  filtered_rentals = $rentals.filter { |rental| rental.person.id == person_id }
+  filtered_rentals.each_with_index do |rental, idx|
+    puts "#{idx+1} - #{rental}"
   end
+  puts "\n"
 end

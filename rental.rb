@@ -16,6 +16,10 @@ class Rental
     update_book(book)
   end
 
+  def to_s
+    "Date: #{date}, Book: \"#{@book.title}\" by #{@book.author}"
+  end
+
   private
 
   def update_book(book)

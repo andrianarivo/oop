@@ -1,4 +1,3 @@
-
 class Book
   attr_accessor :title, :author
   attr_reader :rentals
@@ -13,5 +12,4 @@ class Book
     rental.book = self
     @rentals.push(rental)
   end
-
 end

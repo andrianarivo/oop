@@ -1,4 +1,3 @@
-
 class Classroom
   attr_accessor :label, :students
 
@@ -11,5 +10,4 @@ class Classroom
     student.classroom = self
     @students.push(student)
   end
-
 end

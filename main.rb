@@ -21,11 +21,11 @@ puts capitalized_person.correct_name
 capitalized_trimmed_person = TrimmerDecorator.new(capitalized_person)
 puts capitalized_trimmed_person.correct_name
 
-classroom = Classroom.new("Second 2")
+classroom = Classroom.new('Second 2')
 classroom.add_student(student)
 
-book = Book.new("Lords of the Ring", "Tolkien")
-rental = Rental.new("2023-07-26", book, student)
+book = Book.new('Lords of the Ring', 'Tolkien')
+rental = Rental.new('2023-07-26', book, student)
 
 puts rental.inspect
 puts book.inspect

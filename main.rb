@@ -3,6 +3,7 @@ require_relative 'teacher'
 require_relative 'student'
 require_relative 'book'
 require_relative 'rental'
+require_relative 'classroom'
 
 app = App.new
 
@@ -43,11 +44,12 @@ while loop
     if choice == 1
       print 'Has parent permission? [Y/n]: '
       parent_permission = gets.chomp.downcase == 'y'
-      person = Student.new(age, name, parent_permission)
+      classroom = Classroom.new('T2')
+      person = Student.new(age, classroom, name, parent_permission: parent_permission)
     else
       print 'Specialization: '
       specialization = gets.chomp
-      person = Teacher.new(age, name, specialization)
+      person = Teacher.new(age, specialization, name)
     end
     app.create_person(person)
     puts 'Person created successfully'

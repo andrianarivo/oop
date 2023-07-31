@@ -20,7 +20,7 @@ class App
       puts 'No book record found'
     else
       @books.each do |book|
-        puts book.to_s
+        puts book
       end
     end
     puts "\n"
@@ -31,7 +31,7 @@ class App
       puts 'No Person record found'
     else
       @people.each do |person|
-        puts person.to_s
+        puts person
       end
     end
   end
@@ -137,5 +137,4 @@ class App
     date_format = '%Y/%m/%d'
     Date.strptime(date_str, date_format)
   end
-
 end

@@ -19,7 +19,7 @@ class SchoolLibraryApp
     puts 'Welcome to the School Library App'
     puts 'Please choose an option by entering a number:'
     MENU_CHOICES.each do |number, description|
-      puts "#{number}. #{description.capitalize}"
+      puts "#{number}. #{description.to_s.gsub('_', ' ').capitalize}"
     end
   end
 

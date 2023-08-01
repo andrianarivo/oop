@@ -34,7 +34,7 @@ Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 
 Layout/EndOfLine:
-  EnforcedStyle: crlf
+  EnforcedStyle: lf
 Layout/HashAlignment:
   EnforcedColonStyle: key
 Layout/ExtraSpacing:

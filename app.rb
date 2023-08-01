@@ -7,7 +7,6 @@ require_relative 'person'
 require_relative 'data_preserve'
 require 'date'
 
-
 class App
   attr_reader :books, :people, :rentals
 

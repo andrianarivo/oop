@@ -1,4 +1,5 @@
 require_relative 'nameable'
+require 'json'
 
 class Person < Nameable
   attr_accessor :name, :age, :rentals
@@ -25,6 +26,16 @@ class Person < Nameable
   def add_rental(rental)
     rental.person = self
     @rentals.push(rental)
+  end
+
+  def to_json(*args)
+    JSON.generate(
+      {
+        id: @id,
+        name: @name,
+        age: @age,
+        parent_permission: @parent_permission,
+      })
   end
 
   private

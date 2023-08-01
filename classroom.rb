@@ -1,3 +1,5 @@
+require 'json'
+
 class Classroom
   attr_accessor :label
   attr_reader :students
@@ -11,4 +13,13 @@ class Classroom
     student.classroom = self
     @students.push(student)
   end
+
+  def to_json(*args)
+    JSON.generate(
+      {
+        label: @label,
+      }
+    )
+  end
+
 end

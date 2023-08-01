@@ -1,3 +1,5 @@
+require 'json'
+
 class Rental
   attr_reader :book, :person
   attr_accessor :date
@@ -18,6 +20,16 @@ class Rental
 
   def to_s
     "Date: #{date}, Book: \"#{@book.title}\" by #{@book.author}"
+  end
+
+  def to_json(*args)
+    JSON.generate(
+      {
+        date: @date,
+        person: @person,
+        book: @book
+      }
+    )
   end
 
   private

@@ -27,6 +27,8 @@ class SchoolLibraryApp
     action = MENU_CHOICES[choice]
     if action
       if action == :quit
+        puts 'Saving data...'
+        @school_library.save
         puts 'Thank you for using this app'
         exit
       else

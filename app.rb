@@ -98,6 +98,18 @@ class App
     end
   end
 
+  def save
+    File.open('rentals.json', 'w') do |file|
+      JSON.dump(rentals, file)
+    end
+    File.open('books.json', 'w') do |file|
+      JSON.dump(books, file)
+    end
+    File.open('people.json', 'w') do |file|
+      JSON.dump(people, file)
+    end
+  end
+
   private
 
   def select_book
@@ -137,4 +149,5 @@ class App
     date_format = '%Y/%m/%d'
     Date.strptime(date_str, date_format)
   end
+
 end

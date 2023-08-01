@@ -16,4 +16,15 @@ rentals_path = "rentals.json"
 people_path = "people.json"
 books_path = "books.json"
 
+File.open(rentals_path, 'w') do |file|
+  JSON.dump([r], file)
+end
+
+File.open(people_path, 'w') do |file|
+  JSON.dump([student, teacher], file)
+end
+
+File.open(books_path, 'w') do |file|
+  JSON.dump([book], file)
+end
 binding.pry

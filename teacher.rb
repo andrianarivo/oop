@@ -28,4 +28,11 @@ class Teacher < Person
       })
   end
 
+  def self.from_json(json)
+    specialization = json["specialization"]
+    name = json["name"]
+    age = json["age"]
+    Teacher.new(age, specialization, name)
+  end
+
 end

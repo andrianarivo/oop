@@ -27,4 +27,10 @@ class Book
     )
   end
 
+  def self.from_json(json)
+    title = json["title"]
+    author = json["author"]
+    Book.new(title, author)
+  end
+
 end

@@ -38,6 +38,13 @@ class Person < Nameable
       })
   end
 
+  def self.from_json(json)
+    name = json["name"]
+    age = json["age"]
+    parent_permission = json["parent_permission"]
+    Person.new(age, name, parent_permission: parent_permission)
+  end
+
   private
 
   def of_age?

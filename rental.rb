@@ -32,6 +32,15 @@ class Rental
     )
   end
 
+  def self.from_json(json)
+    date_str = json["date"]
+    date_format = '%Y-%m-%d'
+    date = Date.strptime(date_str, date_format)
+    person = Person.from_json(json["person"])
+    book = Book.from_json(json["book"])
+    Rental.new(date, book, person)
+  end
+
   private
 
   def update_book(book)

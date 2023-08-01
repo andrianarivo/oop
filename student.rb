@@ -32,6 +32,14 @@ class Student < Person
       })
   end
 
+  def self.from_json(json)
+    classroom = Classroom.new(json["classroom"]["label"])
+    name = json["name"]
+    age = json["age"]
+    parent_permission = json["parent_permission"]
+    Student.new(age, classroom, name, parent_permission: parent_permission)
+  end
+
   private
 
   def update_classroom(classroom)

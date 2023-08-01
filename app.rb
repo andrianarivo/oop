@@ -4,11 +4,9 @@ require_relative 'classroom'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'person'
+require_relative 'data_preserve'
 require 'date'
 
-RENTALS_PATH = 'rentals.json'
-BOOKS_PATH = 'books.json'
-PEOPLE_PATH = 'people.json'
 
 class App
   attr_reader :books, :people, :rentals
@@ -103,50 +101,16 @@ class App
   end
 
   def save
-    File.open(RENTALS_PATH, 'w') do |file|
-      JSON.dump(rentals, file)
-    end
-    File.open(BOOKS_PATH, 'w') do |file|
-      JSON.dump(books, file)
-    end
-    File.open(PEOPLE_PATH, 'w') do |file|
-      JSON.dump(people, file)
-    end
+    DataPreserve.save(@books, @people, @rentals)
   end
 
   def reload
     puts 'Loading data from last session...'
-    if File.exist?(PEOPLE_PATH)
-      File.open(PEOPLE_PATH, 'r') do |file|
-        people = JSON.load(file)
-        people.each do |person|
-          @people << Teacher.from_json(person) if person.has_key?("specialization")
-          @people << Student.from_json(person) if person.has_key?("classroom")
-        end
-      end
-    end
-    if File.exist?(BOOKS_PATH)
-      File.open(BOOKS_PATH, 'r') do |file|
-        books = JSON.load(file)
-        books.each do |book|
-          @books << Book.from_json(book)
-        end
-      end
-    end
-    if File.exist?(RENTALS_PATH)
-      File.open(RENTALS_PATH, 'r') do |file|
-        rentals = JSON.load(file)
-        rentals.each do |rental|
-          person = @people.select { |e| e.name == rental["person"]["name"] }.first
-          book = @books.select { |e| e.title == rental["book"]["title"] }.first
-          date_str = rental["date"]
-          date_format = '%Y-%m-%d'
-          date = Date.strptime(date_str, date_format)
-          @rentals << Rental.new(date, book, person)
-        end
-      end
-    end
-    puts "Done!"
+    data = DataPreserve.reload
+    @books = data[0]
+    @people = data[1]
+    @rentals = data[2]
+    puts 'Done!'
   end
 
   private
@@ -188,5 +152,4 @@ class App
     date_format = '%Y/%m/%d'
     Date.strptime(date_str, date_format)
   end
-
 end

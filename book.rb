@@ -18,19 +18,18 @@ class Book
     "Title: \"#{@title}\", Author: #{@author}"
   end
 
-  def to_json(*args)
+  def to_json(*_args)
     JSON.generate(
       {
         title: @title,
-        author: @author,
+        author: @author
       }
     )
   end
 
   def self.from_json(json)
-    title = json["title"]
-    author = json["author"]
+    title = json['title']
+    author = json['author']
     Book.new(title, author)
   end
-
 end

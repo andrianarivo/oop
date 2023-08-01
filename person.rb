@@ -28,20 +28,21 @@ class Person < Nameable
     @rentals.push(rental)
   end
 
-  def to_json(*args)
+  def to_json(*_args)
     JSON.generate(
       {
         id: @id,
         name: @name,
         age: @age,
-        parent_permission: @parent_permission,
-      })
+        parent_permission: @parent_permission
+      }
+    )
   end
 
   def self.from_json(json)
-    name = json["name"]
-    age = json["age"]
-    parent_permission = json["parent_permission"]
+    name = json['name']
+    age = json['age']
+    parent_permission = json['parent_permission']
     Person.new(age, name, parent_permission: parent_permission)
   end
 

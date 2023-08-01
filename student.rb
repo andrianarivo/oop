@@ -21,7 +21,7 @@ class Student < Person
     "[Student] Name: #{@name}, ID: #{@id}, Age: #{@age}"
   end
 
-  def to_json(*args)
+  def to_json(*_args)
     JSON.generate(
       {
         id: @id,
@@ -29,14 +29,15 @@ class Student < Person
         age: @age,
         parent_permission: @parent_permission,
         classroom: @classroom
-      })
+      }
+    )
   end
 
   def self.from_json(json)
-    classroom = Classroom.new(json["classroom"]["label"])
-    name = json["name"]
-    age = json["age"]
-    parent_permission = json["parent_permission"]
+    classroom = Classroom.new(json['classroom']['label'])
+    name = json['name']
+    age = json['age']
+    parent_permission = json['parent_permission']
     Student.new(age, classroom, name, parent_permission: parent_permission)
   end
 
@@ -46,5 +47,4 @@ class Student < Person
     classroom.students.push(self) unless classroom.students.include?(self)
     @classroom = classroom
   end
-
 end

@@ -17,7 +17,7 @@ class Teacher < Person
     "[Teacher] Name: #{@name}, ID: #{@id}, Age: #{@age}"
   end
 
-  def to_json(*args)
+  def to_json(*_args)
     JSON.generate(
       {
         id: @id,
@@ -25,14 +25,14 @@ class Teacher < Person
         age: @age,
         parent_permission: @parent_permission,
         specialization: @specialization
-      })
+      }
+    )
   end
 
   def self.from_json(json)
-    specialization = json["specialization"]
-    name = json["name"]
-    age = json["age"]
+    specialization = json['specialization']
+    name = json['name']
+    age = json['age']
     Teacher.new(age, specialization, name)
   end
-
 end

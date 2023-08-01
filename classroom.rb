@@ -14,12 +14,11 @@ class Classroom
     @students.push(student)
   end
 
-  def to_json(*args)
+  def to_json(*_args)
     JSON.generate(
       {
-        label: @label,
+        label: @label
       }
     )
   end
-
 end

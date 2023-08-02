@@ -4,7 +4,7 @@ RENTALS_PATH = 'rentals.json'.freeze
 BOOKS_PATH = 'books.json'.freeze
 PEOPLE_PATH = 'people.json'.freeze
 
-class DataPreserve
+class RecordStorage
   def self.save(books, people, rentals)
     save_books(books)
     save_people(people)

@@ -40,16 +40,15 @@ class DataPreserve
     @rentals = []
     return unless File.exist?(RENTALS_PATH)
 
-    File.open(RENTALS_PATH, 'r') do |file|
-      rentals_json = JSON.parse(file)
-      rentals_json.each do |rental_json|
-        person = @people.select { |e| e.name == rental_json['person']['name'] }.first
-        book = @books.select { |e| e.title == rental_json['book']['title'] }.first
-        date_str = rental_json['date']
-        date_format = '%Y-%m-%d'
-        date = Date.strptime(date_str, date_format)
-        @rentals << Rental.new(date, book, person)
-      end
+    rentals_string = File.read(RENTALS_PATH)
+    rentals_json = JSON.parse(rentals_string)
+    rentals_json.each do |rental_json|
+      person = @people.select { |e| e.name == rental_json['person']['name'] }.first
+      book = @books.select { |e| e.title == rental_json['book']['title'] }.first
+      date_str = rental_json['date']
+      date_format = '%Y-%m-%d'
+      date = Date.strptime(date_str, date_format)
+      @rentals << Rental.new(date, book, person)
     end
   end
 
@@ -57,11 +56,10 @@ class DataPreserve
     @books = []
     return unless File.exist?(BOOKS_PATH)
 
-    File.open(BOOKS_PATH, 'r') do |file|
-      books_json = JSON.parse(file)
-      books_json.each do |book_json|
-        @books << Book.from_json(book_json)
-      end
+    books_string = File.read(BOOKS_PATH)
+    books_json = JSON.parse(books_string)
+    books_json.each do |book_json|
+      @books << Book.from_json(book_json)
     end
   end
 
@@ -69,12 +67,11 @@ class DataPreserve
     @people = []
     return unless File.exist?(PEOPLE_PATH)
 
-    File.open(PEOPLE_PATH, 'r') do |file|
-      people_json = JSON.parse(file)
-      people_json.each do |person_json|
-        @people << Teacher.from_json(person_json) if person_json.key?('specialization')
-        @people << Student.from_json(person_json) if person_json.key?('classroom')
-      end
+    people_string = File.read(PEOPLE_PATH)
+    people_json = JSON.parse(people_string)
+    people_json.each do |person_json|
+      @people << Teacher.from_json(person_json) if person_json.key?('specialization')
+      @people << Student.from_json(person_json) if person_json.key?('classroom')
     end
   end
 end

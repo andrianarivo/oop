@@ -13,10 +13,10 @@ class SchoolLibraryApp
 
   def initialize
     @school_library = App.new
+    @school_library.reload
   end
 
   def display_menu
-    puts 'Welcome to the School Library App'
     puts 'Please choose an option by entering a number:'
     MENU_CHOICES.each do |number, description|
       puts "#{number}. #{description.to_s.gsub('_', ' ').capitalize}"
@@ -27,6 +27,8 @@ class SchoolLibraryApp
     action = MENU_CHOICES[choice]
     if action
       if action == :quit
+        puts 'Saving data...'
+        @school_library.save
         puts 'Thank you for using this app'
         exit
       else
@@ -48,6 +50,7 @@ class SchoolLibraryApp
 end
 
 def main
+  puts 'Welcome to the School Library App'
   school_library_app = SchoolLibraryApp.new
   school_library_app.run
 end

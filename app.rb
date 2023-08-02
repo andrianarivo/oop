@@ -4,6 +4,7 @@ require_relative 'classroom'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'person'
+require_relative 'data_preserve'
 require 'date'
 
 class App
@@ -91,11 +92,24 @@ class App
 
       puts 'Rentals Details:'
       filtered_rentals = @rentals.filter { |rental| rental.person.id == person_id }
+      puts 'No rentals found for the given person' if filtered_rentals.empty?
       filtered_rentals.each_with_index do |rental, idx|
         puts "#{idx + 1} - #{rental}"
       end
-      puts 'No rentals found for the given person' if filtered_rentals.empty?
     end
+  end
+
+  def save
+    DataPreserve.save(@books, @people, @rentals)
+  end
+
+  def reload
+    puts 'Loading data from last session...'
+    data = DataPreserve.reload
+    @books = data[0]
+    @people = data[1]
+    @rentals = data[2]
+    puts 'Done!'
   end
 
   private

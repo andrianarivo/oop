@@ -1,4 +1,5 @@
 require_relative 'person'
+require 'json'
 
 class Teacher < Person
   attr_reader :specialization
@@ -14,5 +15,24 @@ class Teacher < Person
 
   def to_s
     "[Teacher] Name: #{@name}, ID: #{@id}, Age: #{@age}"
+  end
+
+  def to_json(*_args)
+    JSON.generate(
+      {
+        id: @id,
+        name: @name,
+        age: @age,
+        parent_permission: @parent_permission,
+        specialization: @specialization
+      }
+    )
+  end
+
+  def self.from_json(json)
+    specialization = json['specialization']
+    name = json['name']
+    age = json['age']
+    Teacher.new(age, specialization, name)
   end
 end

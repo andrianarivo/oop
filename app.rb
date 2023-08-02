@@ -4,7 +4,7 @@ require_relative 'classroom'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'person'
-require_relative 'data_preserve'
+require_relative 'record_storage'
 require 'date'
 
 class App
@@ -100,12 +100,12 @@ class App
   end
 
   def save
-    DataPreserve.save(@books, @people, @rentals)
+    RecordStorage.save(@books, @people, @rentals)
   end
 
   def reload
     puts 'Loading data from last session...'
-    data = DataPreserve.reload
+    data = RecordStorage.reload
     @books = data[0]
     @people = data[1]
     @rentals = data[2]

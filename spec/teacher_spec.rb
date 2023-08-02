@@ -35,15 +35,18 @@ describe Teacher do
 
   context '#to_json' do
     it 'returns the json representation of the teacher' do
+      matching = File.read('spec_json/teacher')
+      expected = matching.gsub('@teacher.id', @teacher.id.to_s)
       json_teacher = @teacher.to_json
-      # rubocop:disable Layout/LineLength
-      expect(json_teacher).to eql "{\"id\":#{@teacher.id},\"name\":\"David\",\"age\":27,\"parent_permission\":true,\"specialization\":\"Maths\"}"
+      expect(json_teacher).to eql expected
     end
   end
 
   context '#from_json' do
     it 'returns an new teacher object from JSON' do
-      json = JSON.parse('{"id":3,"name":"David","age":27,"parent_permission":true,"specialization":"Maths"}')
+      json_file = File.read('spec_json/teacher')
+      json_string = json_file.gsub('@teacher.id', @teacher.id.to_s)
+      json = JSON.parse(json_string)
       expect(Teacher.from_json(json)).to be_an_instance_of Teacher
     end
   end

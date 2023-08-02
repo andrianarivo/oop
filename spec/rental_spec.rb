@@ -59,14 +59,17 @@ describe Rental do
 
   context '#to_json' do
     it 'returns the json representation of a rental' do
-      # rubocop:disable Layout/LineLength
-      expect(@rental.to_json).to eql "{\"date\":\"2020-08-13\",\"person\":{\"id\":#{@student.id},\"name\":\"Maximus\",\"age\":19,\"parent_permission\":true,\"classroom\":{\"label\":\"T2\"}},\"book\":{\"title\":\"Lord of the Rings\",\"author\":\"Tolkien\"}}"
+      matching = File.read('spec_json/rental')
+      expected = matching.gsub('@student.id', @student.id.to_s)
+      expect(@rental.to_json).to eql expected
     end
   end
 
   context '#from_json' do
     it 'returns a new rental object from JSON' do
-      json = JSON.parse("{\"date\":\"2020-08-13\",\"person\":{\"id\":#{@student.id},\"name\":\"Maximus\",\"age\":19,\"parent_permission\":true,\"classroom\":{\"label\":\"T2\"}},\"book\":{\"title\":\"Lord of the Rings\",\"author\":\"Tolkien\"}}")
+      json_file = File.read('spec_json/rental')
+      json_string = json_file.gsub('@student.id', @student.id.to_s)
+      json = JSON.parse(json_string)
       expect(Rental.from_json(json)).to be_an_instance_of Rental
     end
   end

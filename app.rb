@@ -15,7 +15,8 @@ class App
 
   def initialize
     json_storage = JSONStorageStrategy.new
-    @orm = ORM.new(json_storage)
+    sqlite_storage = SQLiteStorageStrategy.new('oop_school_library.db')
+    repository_factory = RepositoryFactory.new(sqlite_storage)
     @orm = ORM.new(repository_factory)
     @people = @orm.load_all_people
     @books = @orm.load_all_books

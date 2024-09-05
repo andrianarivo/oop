@@ -5,15 +5,19 @@ require_relative 'student'
 require_relative 'teacher'
 require_relative 'person'
 require_relative 'record_storage'
+require_relative 'json_storage_strategy'
+require_relative 'orm'
 require 'date'
 
 class App
-  attr_reader :books, :people, :rentals
+  attr_reader :books, :people, :rentals, :orm
 
   def initialize
-    @books = []
-    @people = []
-    @rentals = []
+    json_storage = JSONStorageStrategy.new
+    @orm = ORM.new(json_storage)
+    @books = @orm.load_all_books
+    @people = @orm.load_all_books
+    @rentals = @orm.load_all_books
   end
 
   def list_books
@@ -53,6 +57,7 @@ class App
       person = Person.new(age, name)
     end
     @people << person
+    @orm.save_person(person)
     puts 'Person created successfully'
   end
 
@@ -64,6 +69,8 @@ class App
     author = gets.chomp
     book = Book.new(title, author)
     @books << book
+    @orm.save_book(book)
+    puts 'Book created successfully'
   end
 
   def create_rental
@@ -79,6 +86,7 @@ class App
       rental = Rental.new(date, selected_book, selected_person)
 
       @rentals << rental
+      @orm.save_rental(rental)
       puts 'Rental created successfully'
     end
   end
@@ -100,15 +108,14 @@ class App
   end
 
   def save
-    RecordStorage.save(@books, @people, @rentals)
+    #RecordStorage.save(@books, @people, @rentals)
   end
 
   def reload
     puts 'Loading data from last session...'
-    data = RecordStorage.reload
-    @books = data[0]
-    @people = data[1]
-    @rentals = data[2]
+    @books = @orm.load_all_books
+    @people = @orm.load_all_people
+    @rentals = @orm.load_all_rentals
     puts 'Done!'
   end
 

@@ -1,8 +1,8 @@
 require 'json'
 
-RENTALS_PATH = 'rentals.json'.freeze
-BOOKS_PATH = 'books.json'.freeze
-PEOPLE_PATH = 'people.json'.freeze
+# RENTALS_PATH = 'rentals.json'.freeze
+# BOOKS_PATH = 'books.json'.freeze
+# PEOPLE_PATH = 'people.json'.freeze
 
 class RecordStorage
   def self.save(books, people, rentals)

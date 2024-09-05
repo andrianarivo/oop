@@ -2,9 +2,10 @@ require 'json'
 
 class Classroom
   attr_accessor :label
-  attr_reader :students
+  attr_reader :students, :id
 
-  def initialize(label)
+  def initialize(id, label)
+    @id = id 
     @label = label
     @students = []
   end
@@ -15,10 +16,18 @@ class Classroom
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        label: @label
-      }
-    )
+    JSON.generate(to_h)
+  end
+
+  def to_h
+    {
+      id: @id,
+      label: @label,
+      entity_type: self.class
+    }
+  end
+
+  def self.from_hash(hash)
+    new(hash[:label])
   end
 end

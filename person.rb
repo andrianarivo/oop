@@ -7,7 +7,7 @@ class Person < Nameable
 
   def initialize(age, name = 'Unknown', parent_permission: true)
     super()
-    rndg = Random.new(Random.new_seed)
+    rndg = Random.new
     @id = rndg.rand(100)
     @name = name
     @age = age
@@ -29,21 +29,21 @@ class Person < Nameable
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        id: @id,
-        name: @name,
-        age: @age,
-        parent_permission: @parent_permission
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    name = json['name']
-    age = json['age']
-    parent_permission = json['parent_permission']
-    Person.new(age, name, parent_permission: parent_permission)
+  def to_h
+    {
+      id: @id,
+      name: @name,
+      age: @age,
+      parent_permission: @parent_permission,
+      entity_type: self.class
+    }
+  end
+
+  def self.from_hash(hash)
+    new(hash[:age], hash[:name], parent_permission: hash[:parent_permission])
   end
 
   private

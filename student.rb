@@ -22,23 +22,22 @@ class Student < Person
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        id: @id,
-        name: @name,
-        age: @age,
-        parent_permission: @parent_permission,
-        classroom: @classroom
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    classroom = Classroom.new(json['classroom']['label'])
-    name = json['name']
-    age = json['age']
-    parent_permission = json['parent_permission']
-    Student.new(age, classroom, name, parent_permission: parent_permission)
+  def to_h
+    {
+      id: @id,
+      name: @name,
+      age: @age,
+      parent_permission: @parent_permission,
+      classroom_id: @classroom.id,
+      entity_type: self.class
+    }   
+  end
+
+  def self.from_hash(hash)
+    new(hash[:age], Classroom.from_hash(hash[:classroom]), hash[:name], parent_permission: hash[:parent_permission])
   end
 
   private

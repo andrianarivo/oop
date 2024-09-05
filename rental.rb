@@ -23,22 +23,23 @@ class Rental
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        date: @date,
-        person: @person,
-        book: @book
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    date_str = json['date']
+  def to_h
+    {
+      date: @date,
+      person: @person,
+      book: @book,
+      entity_type: self.class
+    }
+  end
+
+  def self.from_hash(hash)
+    date_str = hash[:date]
     date_format = '%Y-%m-%d'
     date = Date.strptime(date_str, date_format)
-    person = Person.from_json(json['person'])
-    book = Book.from_json(json['book'])
-    Rental.new(date, book, person)
+    new(date, Book.from_hash(hash[:book]), Person.from_hash(hash[:person]))
   end
 
   private

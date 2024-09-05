@@ -19,17 +19,18 @@ class Book
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        title: @title,
-        author: @author
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    title = json['title']
-    author = json['author']
-    Book.new(title, author)
+  def to_h
+    {
+      title: @title,
+      author: @author,
+      entity_type: self.class
+    }
+  end
+
+  def self.from_hash(hash)
+    new(hash[:title], hash[:author])
   end
 end

@@ -18,21 +18,21 @@ class Teacher < Person
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        id: @id,
-        name: @name,
-        age: @age,
-        parent_permission: @parent_permission,
-        specialization: @specialization
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    specialization = json['specialization']
-    name = json['name']
-    age = json['age']
-    Teacher.new(age, specialization, name)
+  def to_h
+    {
+      id: @id,
+      name: @name,
+      age: @age,
+      parent_permission: @parent_permission,
+      specialization: @specialization,
+      entity_type: self.class
+    }
+  end
+
+  def self.from_hash(hash)
+    new(hash[:age], hash[:specialization], hash[:name])
   end
 end

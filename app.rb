@@ -4,9 +4,10 @@ require_relative 'classroom'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'person'
-require_relative 'record_storage'
 require_relative 'json_storage_strategy'
 require_relative 'orm'
+require_relative 'repository_factory'
+require_relative 'sqlite_storage_strategy'
 require 'date'
 
 class App
@@ -15,9 +16,10 @@ class App
   def initialize
     json_storage = JSONStorageStrategy.new
     @orm = ORM.new(json_storage)
+    @orm = ORM.new(repository_factory)
+    @people = @orm.load_all_people
     @books = @orm.load_all_books
-    @people = @orm.load_all_books
-    @rentals = @orm.load_all_books
+    @rentals = @orm.load_all_rentals
   end
 
   def list_books
@@ -108,14 +110,13 @@ class App
   end
 
   def save
-    #RecordStorage.save(@books, @people, @rentals)
   end
 
   def reload
     puts 'Loading data from last session...'
-    @books = @orm.load_all_books
-    @people = @orm.load_all_people
-    @rentals = @orm.load_all_rentals
+    # @books = @orm.load_all_books
+    # @people = @orm.load_all_people
+    # @rentals = @orm.load_all_rentals
     puts 'Done!'
   end
 
@@ -142,7 +143,7 @@ class App
   def create_student(age, name)
     print 'Has parent permission? [Y/n]: '
     parent_permission = gets.chomp.downcase == 'y'
-    classroom = Classroom.new('T2')
+    classroom = Classroom.new(1, 't2')
     Student.new(age, classroom, name, parent_permission: parent_permission)
   end
 

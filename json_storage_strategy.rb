@@ -3,22 +3,22 @@ require 'json'
 class JSONStorageStrategy
 
   def save(data, entity)
-    existing_data = load_all
+    existing_data = load_all(entity)
     data[:id] = existing_data.length + 1
     existing_data << data
-    File.open(filename, 'w') do |file|
+    File.open(filename(entity), 'w') do |file|
       JSON.dump(existing_data, file)
     end
   end
 
   def load_all(entity)
-    return [] unless File.exist?(filename)
-    JSON.parse(File.read(filename), symbolize_names: true)
+    return [] unless File.exist?(filename(entity))
+    JSON.parse(File.read(filename(entity)), symbolize_names: true)
   end
 
   private 
 
-  def filename
+  def filename(entity)
     "#{entity}.json"
   end
 end

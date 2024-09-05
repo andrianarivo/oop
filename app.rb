@@ -11,12 +11,12 @@ require_relative 'sqlite_storage_strategy'
 require 'date'
 
 class App
-  attr_reader :books, :people, :rentals, :orm
+  attr_reader :books, :people, :rentals, :classrooms, :orm
 
   def initialize
     json_storage = JSONStorageStrategy.new
     sqlite_storage = SQLiteStorageStrategy.new('oop_school_library.db')
-    repository_factory = RepositoryFactory.new(sqlite_storage)
+    repository_factory = RepositoryFactory.new(json_storage)
     @orm = ORM.new(repository_factory)
     @people = @orm.load_all_people
     @books = @orm.load_all_books
@@ -59,8 +59,8 @@ class App
       puts 'Invalid person type'
       person = Person.new(age, name)
     end
-    @people << person
     @orm.save_person(person)
+    @people = @orm.load_all_people
     puts 'Person created successfully'
   end
 
@@ -71,8 +71,8 @@ class App
     print 'Author: '
     author = gets.chomp
     book = Book.new(title, author)
-    @books << book
     @orm.save_book(book)
+    @books = @orm.load_all_books
     puts 'Book created successfully'
   end
 
@@ -88,8 +88,8 @@ class App
 
       rental = Rental.new(date, selected_book, selected_person)
 
-      @rentals << rental
       @orm.save_rental(rental)
+      @rentals = @orm.load_all_rentals
       puts 'Rental created successfully'
     end
   end
@@ -144,8 +144,13 @@ class App
   def create_student(age, name)
     print 'Has parent permission? [Y/n]: '
     parent_permission = gets.chomp.downcase == 'y'
-    classroom = Classroom.new(1, 't2')
-    Student.new(age, classroom, name, parent_permission: parent_permission)
+    @classrooms = @orm.load_all_classrooom
+    if @classrooms.empty?
+      classroom = Classroom.new('t2')
+      @orm.save_classroom(classroom)
+      @classrooms = @orm.load_all_classrooom
+    end
+    Student.new(age, @classrooms.first, name, parent_permission: parent_permission)
   end
 
   def create_teacher(age, name)

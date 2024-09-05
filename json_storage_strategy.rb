@@ -51,37 +51,27 @@ class JSONStorageStrategy
   def load_all_people
     return [] unless File.exist?(PEOPLE_FILE)
 
-    people = []
-    people_string = File.read(PEOPLE_PATH)
-    people_json = JSON.parse(people_string)
-    people_json.each do |person_json|
-      people << Teacher.from_json(person_json) if person_json.key?('specialization')
-      people << Student.from_json(person_json) if person_json.key?('classroom')
+    JSON.parse(File.read(PEOPLE_PATH)).map do |person_json|
+      if person_json.key?('specialization')
+        Teacher.from_json(person_json)
+      elsif person_json.key?('classroom')
+        Student.from_json(person_json)
+      end
     end
-
-    people
   end
 
   def load_all_books
     return [] unless File.exist?(BOOKS_FILE)
 
-    books = []
-    books_string = File.read(BOOKS_PATH)
-    books_json = JSON.parse(books_string)
-    books_json.each do |book_json|
+    JSON.parse(File.read(BOOKS_PATH)).map do |book_json|
       books << Book.from_json(book_json)
     end
-
-    books
  end
 
   def load_all_rentals
     return [] unless File.exist?(RENTALS_FILE)
 
-    rentals = []
-    rentals_string = File.read(RENTALS_PATH)
-    rentals_json = JSON.parse(rentals_string)
-    rentals_json.each do |rental_json|
+    JSON.parse(File.read(RENTALS_PATH)).map do |rental_json|
       person = load_all_people.select { |e| e.name == rental_json['person']['name'] }.first
       book = load_all_books.select { |e| e.title == rental_json['book']['title'] }.first
       date_str = rental_json['date']
@@ -89,7 +79,5 @@ class JSONStorageStrategy
       date = Date.strptime(date_str, date_format)
       rentals << Rental.new(date, book, person)
     end
-
-    rentals
  end
 end

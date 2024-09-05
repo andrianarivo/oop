@@ -2,6 +2,7 @@ require_relative 'person'
 require 'json'
 
 class Teacher < Person
+  attr_accessor :id
   attr_reader :specialization
 
   def initialize(age, specialization, name = 'Unknown', parent_permission: true)
@@ -28,11 +29,12 @@ class Teacher < Person
       age: @age,
       parent_permission: @parent_permission,
       specialization: @specialization,
-      entity_type: self.class
     }
   end
 
   def self.from_hash(hash)
-    new(hash[:age], hash[:specialization], hash[:name])
+    teacher = new(hash[:age], hash[:specialization], hash[:name])
+    teacher.id = hash[:id]
+    teacher
   end
 end

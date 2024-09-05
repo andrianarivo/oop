@@ -1,11 +1,10 @@
 require 'json'
 
 class Classroom
-  attr_accessor :label
-  attr_reader :students, :id
+  attr_accessor :label, :id
+  attr_reader :students
 
-  def initialize(id, label)
-    @id = id 
+  def initialize(label)
     @label = label
     @students = []
   end
@@ -23,11 +22,12 @@ class Classroom
     {
       id: @id,
       label: @label,
-      entity_type: self.class
     }
   end
 
   def self.from_hash(hash)
-    new(hash[:label])
+    classroom = new(hash[:label])
+    classroom.id = hash[:id]
+    classroom
   end
 end

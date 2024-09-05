@@ -1,3 +1,5 @@
+require_relative 'person_factory'
+
 PEOPLE_ENTITY = "people".freeze
 
 class PersonRepository
@@ -11,14 +13,6 @@ class PersonRepository
   end
 
   def load_all
-    @storage.load_all(PEOPLE_ENTITY).map do |person_hash|
-      if person_hash.key?(:specialization)
-        Teacher.from_hash(person_hash)
-      elsif person_hash.key?(:classroom)
-        Student.from_hash(person_hash)
-      else
-        Person.from_hash(person_hash)
-      end
-    end
+    @storage.load_all(PEOPLE_ENTITY).map { |person_hash| PersonFactory.from_hash(person_hash, @storage) }
   end
 end

@@ -2,6 +2,7 @@ require_relative 'person'
 require 'json'
 
 class Student < Person
+  attr_accessor :id
   attr_reader :classroom
 
   def initialize(age, classroom, name = 'Unknown', parent_permission: true)
@@ -32,12 +33,14 @@ class Student < Person
       age: @age,
       parent_permission: @parent_permission,
       classroom_id: @classroom.id,
-      entity_type: self.class
     }   
   end
 
-  def self.from_hash(hash)
-    new(hash[:age], Classroom.from_hash(hash[:classroom]), hash[:name], parent_permission: hash[:parent_permission])
+  def self.from_hash(hash, storage)
+    classroom_hash = storage.load_all(CLASSROOM_ENTITY).find { |c| c[:id] == hash[:classroom_id] }
+    student = new(hash[:age], Classroom.from_hash(classroom_hash), hash[:name], parent_permission: hash[:parent_permission])
+    student.id = hash[:id] 
+    student
   end
 
   private

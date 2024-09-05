@@ -11,6 +11,6 @@ class RentalRepository
   end
 
   def load_all
-    @storage.load_all(RENTAL_ENTITY).map { |rental_hash| Rental.from_hash(rental_hash) }
+    @storage.load_all(RENTAL_ENTITY).map { |rental_hash| Rental.from_hash(rental_hash, @storage) }
   end
 end

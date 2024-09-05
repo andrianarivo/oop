@@ -15,7 +15,7 @@ class SQLiteStorageStrategy
   end
 
   def load_all(table_name)
-    @db.execute("SELECT * FROM #{table_name}")
+    @db.execute("SELECT * FROM #{table_name}").map { |row| row.transform_keys(&:to_sym) }
   end
 
   def create_table(table_name, columns)

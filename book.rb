@@ -1,7 +1,7 @@
 require 'json'
 
 class Book
-  attr_accessor :title, :author, :rentals
+  attr_accessor :title, :author, :rentals, :id
 
   def initialize(title, author)
     @title = title
@@ -24,13 +24,15 @@ class Book
 
   def to_h
     {
+      id: @id,
       title: @title,
       author: @author,
-      entity_type: self.class
     }
   end
 
   def self.from_hash(hash)
-    new(hash[:title], hash[:author])
+    book = new(hash[:title], hash[:author])
+    book.id = hash[:id]
+    book
   end
 end

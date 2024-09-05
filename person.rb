@@ -2,13 +2,10 @@ require_relative 'nameable'
 require 'json'
 
 class Person < Nameable
-  attr_accessor :name, :age, :parent_permission, :rentals
-  attr_reader :id
+  attr_accessor :name, :age, :parent_permission, :rentals, :id
 
   def initialize(age, name = 'Unknown', parent_permission: true)
     super()
-    rndg = Random.new
-    @id = rndg.rand(100)
     @name = name
     @age = age
     @parent_permission = parent_permission
@@ -38,12 +35,13 @@ class Person < Nameable
       name: @name,
       age: @age,
       parent_permission: @parent_permission,
-      entity_type: self.class
     }
   end
 
   def self.from_hash(hash)
-    new(hash[:age], hash[:name], parent_permission: hash[:parent_permission])
+    person = new(hash[:age], hash[:name], parent_permission: hash[:parent_permission])
+    person.id = hash[:id]
+    person
   end
 
   private

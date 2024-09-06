@@ -1,7 +1,7 @@
 require 'json'
 
 class Book
-  attr_accessor :title, :author, :rentals
+  attr_accessor :title, :author, :rentals, :id
 
   def initialize(title, author)
     @title = title
@@ -19,17 +19,20 @@ class Book
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        title: @title,
-        author: @author
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    title = json['title']
-    author = json['author']
-    Book.new(title, author)
+  def to_h
+    {
+      id: @id,
+      title: @title,
+      author: @author,
+    }
+  end
+
+  def self.from_hash(hash)
+    book = new(hash[:title], hash[:author])
+    book.id = hash[:id]
+    book
   end
 end

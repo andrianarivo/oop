@@ -2,7 +2,7 @@ require 'json'
 
 class Rental
   attr_reader :book, :person
-  attr_accessor :date
+  attr_accessor :date, :id
 
   def initialize(date, book, person)
     @date = date
@@ -23,22 +23,28 @@ class Rental
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        date: @date,
-        person: @person,
-        book: @book
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    date_str = json['date']
+  def to_h
+    {
+      id: @id,
+      date: @date,
+      person_id: @person.id,
+      book_id: @book.id,
+    }
+  end
+
+  def self.from_hash(hash, storage)
+    date_str = hash[:date]
     date_format = '%Y-%m-%d'
     date = Date.strptime(date_str, date_format)
-    person = Person.from_json(json['person'])
-    book = Book.from_json(json['book'])
-    Rental.new(date, book, person)
+    book_hash = storage.load_all(BOOK_ENTITY).find { |b| b[:id] == hash[:book_id] }
+    person_hash = storage.load_all(PEOPLE_ENTITY).find { |p| p[:id] == hash[:person_id] }
+    person = PersonFactory.from_hash(person_hash, storage)
+    rental = new(date, Book.from_hash(book_hash), person)
+    rental.id = hash[:id]
+    rental
   end
 
   private

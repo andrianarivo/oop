@@ -2,6 +2,7 @@ require_relative 'person'
 require 'json'
 
 class Teacher < Person
+  attr_accessor :id
   attr_reader :specialization
 
   def initialize(age, specialization, name = 'Unknown', parent_permission: true)
@@ -18,21 +19,22 @@ class Teacher < Person
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        id: @id,
-        name: @name,
-        age: @age,
-        parent_permission: @parent_permission,
-        specialization: @specialization
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    specialization = json['specialization']
-    name = json['name']
-    age = json['age']
-    Teacher.new(age, specialization, name)
+  def to_h
+    {
+      id: @id,
+      name: @name,
+      age: @age,
+      parent_permission: @parent_permission,
+      specialization: @specialization,
+    }
+  end
+
+  def self.from_hash(hash)
+    teacher = new(hash[:age], hash[:specialization], hash[:name])
+    teacher.id = hash[:id]
+    teacher
   end
 end

@@ -2,13 +2,10 @@ require_relative 'nameable'
 require 'json'
 
 class Person < Nameable
-  attr_accessor :name, :age, :parent_permission, :rentals
-  attr_reader :id
+  attr_accessor :name, :age, :parent_permission, :rentals, :id
 
   def initialize(age, name = 'Unknown', parent_permission: true)
     super()
-    rndg = Random.new(Random.new_seed)
-    @id = rndg.rand(100)
     @name = name
     @age = age
     @parent_permission = parent_permission
@@ -29,21 +26,22 @@ class Person < Nameable
   end
 
   def to_json(*_args)
-    JSON.generate(
-      {
-        id: @id,
-        name: @name,
-        age: @age,
-        parent_permission: @parent_permission
-      }
-    )
+    JSON.generate(to_h)
   end
 
-  def self.from_json(json)
-    name = json['name']
-    age = json['age']
-    parent_permission = json['parent_permission']
-    Person.new(age, name, parent_permission: parent_permission)
+  def to_h
+    {
+      id: @id,
+      name: @name,
+      age: @age,
+      parent_permission: @parent_permission,
+    }
+  end
+
+  def self.from_hash(hash)
+    person = new(hash[:age], hash[:name], parent_permission: hash[:parent_permission])
+    person.id = hash[:id]
+    person
   end
 
   private
